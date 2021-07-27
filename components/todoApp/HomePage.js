@@ -10,44 +10,6 @@ export default function HomePage() {
     setModalVisible(false);
   };
 
-  // const handleChange = value => {
-  //   setTitle(value);
-  // };
-  // const handleDate = value => {
-  //   setSelectDate(value.dateString);
-  // };
-  // const handleTime = value => {
-  //   setSelectTime(value);
-  // };
-
-  // const handleFilterAll = () => {
-  //   const data = [...storage];
-  //   setData(data);
-  // };
-  // const handleFilterDue = () => {
-  //   const data = [...storage];
-  //   const filterData = data.filter(item => {
-  //     const leftTime = moment(item.date + item.time, 'YYYY-MM-DDLT');
-  //     const pastTime = moment(leftTime);
-  //     const presentTime = moment(new Date());
-  //     const duration = moment.duration(pastTime.diff(presentTime));
-  //     return Math.ceil(duration.asMinutes()) <= 0;
-  //   });
-  //   setData(filterData);
-  // };
-  // const handleFilterComplete = async () => {
-  //   const todoData = JSON.parse(
-  //     (await AsyncStorage.getItem('TodoData')) || '[]',
-  //   );
-  //   console.log('AsyncStorage :', todoData);
-  //   const filterData = todoData.filter(n1 => n1.isSelected === true);
-  //   setData(filterData);
-  // };
-  // const handleFilterNotComplete = () => {
-  //   const data = [...storage];
-  //   const filterData = data.filter(n1 => n1.isSelected === false);
-  //   setData(filterData);
-  // };
   return (
     <View>
       <View style={styles.row}>

@@ -1,27 +1,27 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { Calendar } from "react-native-calendars";
-import moment from "moment";
+import React from 'react';
+import {Text, View} from 'react-native';
+import {Calendar} from 'react-native-calendars';
+import moment from 'moment';
 
-export default function CalendarTodo({ onDate }) {
-  const currentDate = moment(new Date()).format("yyyy-MM-DD");
+export default function CalendarTodo({onDate}) {
+  const currentDate = moment(new Date()).format('yyyy-MM-DD');
 
   return (
     <Calendar
       current={currentDate}
       minDate={currentDate}
-      onDayPress={(day) => {
+      onDayPress={day => {
         return onDate(day);
       }}
-      onDayLongPress={(day) => {
+      onDayLongPress={day => {
         return onDate(day);
       }}
-      monthFormat={"MM yyyy"}
+      monthFormat={'MM yyyy'}
       disableAllTouchEventsForDisabledDays={true}
-      renderHeader={(date) => {
+      renderHeader={date => {
         return (
           <View key={date}>
-            <Text>{date.toString("MMM yyyy")}</Text>
+            <Text>{date.toString('MMM yyyy')}</Text>
           </View>
         );
       }}

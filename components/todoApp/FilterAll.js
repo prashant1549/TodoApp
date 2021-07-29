@@ -3,7 +3,8 @@ import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import TodoList from './TodoList';
 import ModalPage from './ModalPage';
-import {editTodo, checkTodo} from './Action/Todo';
+import {editTodo, checkTodo, asynctStorageTodo} from './Action/Todo';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function FilterAll({navigation}) {
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ export default function FilterAll({navigation}) {
     },
     [],
   );
+  useEffect(async () => {
+    const data = JSON.parse((await AsyncStorage.getItem('TodoData')) || '[]');
+    dispatch(asynctStorageTodo(data));
+  }, []);
   const todos = useSelector(state => state.TodoReducer.todoList);
   const closeModal = () => {
     setModalVisible(false);
@@ -39,12 +44,15 @@ export default function FilterAll({navigation}) {
     data.time = time;
     setTodoObject(data);
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = {...todoObject};
     const dataSet = [...todos];
     const findIndx = dataSet.findIndex(n1 => n1.id === data.id);
     dataSet[findIndx] = data;
     dispatch(editTodo(dataSet));
+    try {
+      await AsyncStorage.setItem('TodoData', JSON.stringify(dataSet));
+    } catch (error) {}
     setTodoObject({
       id: '',
       title: '',
@@ -63,16 +71,23 @@ export default function FilterAll({navigation}) {
     setEditIndex(findIndex);
     setModalVisible(true);
   };
-  const handleCheckBox = id => {
+  const handleCheckBox = async id => {
     const data = [...todos];
     const findIndx = data.findIndex(n1 => n1.id === id);
     data[findIndx].isSelected = !data[findIndx].isSelected;
     dispatch(checkTodo(data));
+    try {
+      await AsyncStorage.setItem('TodoData', JSON.stringify(data));
+    } catch (error) {}
   };
-  console.log(todos);
   return (
     <View>
-      <TodoList Data={todos} onEdit={handleEdit} onCheckBox={handleCheckBox} />
+      <TodoList
+        Data={todos}
+        onEdit={handleEdit}
+        onCheckBox={handleCheckBox}
+        totalItem="All"
+      />
       <ModalPage
         modalVisible={modalVisible}
         callBack={closeModal}

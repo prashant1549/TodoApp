@@ -1,4 +1,10 @@
-import {ADD_TODO, DELETE_TODO, EDIT_TODO, CHECK_TODO} from '../Action/Type';
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
+  CHECK_TODO,
+  ASYNCSTORAGE_TODO,
+} from '../Action/Type';
 
 const initialState = {
   todoList: [],
@@ -22,6 +28,11 @@ const TodoReducer = (state = initialState, action) => {
         ...state,
       };
     case CHECK_TODO:
+      state.todoList = action.data;
+      return {
+        ...state,
+      };
+    case ASYNCSTORAGE_TODO:
       state.todoList = action.data;
       return {
         ...state,

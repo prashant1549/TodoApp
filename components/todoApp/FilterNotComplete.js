@@ -43,11 +43,14 @@ export default function FilterNotComplete({navigation}) {
     data.time = time;
     setTodoObject(data);
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = {...todoObject};
     const dataSet = [...todos];
     dataSet[editIndex] = data;
     dispatch(editTodo(dataSet));
+    try {
+      await AsyncStorage.setItem('TodoData', JSON.stringify(dataSet));
+    } catch (error) {}
     setTodoObject({
       id: '',
       title: '',
@@ -66,11 +69,14 @@ export default function FilterNotComplete({navigation}) {
     setEditIndex(findIndex);
     setModalVisible(true);
   };
-  const handleCheckBox = id => {
+  const handleCheckBox = async id => {
     const data = [...todos];
     const findIndx = data.findIndex(n1 => n1.id === id);
     data[findIndx].isSelected = !data[findIndx].isSelected;
     dispatch(checkTodo(data));
+    try {
+      await AsyncStorage.setItem('TodoData', JSON.stringify(data));
+    } catch (error) {}
   };
 
   return (
@@ -79,6 +85,7 @@ export default function FilterNotComplete({navigation}) {
         Data={filterData}
         onEdit={handleEdit}
         onCheckBox={handleCheckBox}
+        totalItem="Not Complete"
       />
       <ModalPage
         modalVisible={modalVisible}

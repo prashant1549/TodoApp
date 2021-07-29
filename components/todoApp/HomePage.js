@@ -42,20 +42,20 @@ export default function HomePage() {
   };
   const handleSubmit = async () => {
     const data = {...todoObject};
-    // const todoData = JSON.parse(
-    //   (await AsyncStorage.getItem('TodoData')) || '[]',
-    // );
+    const todoData = JSON.parse(
+      (await AsyncStorage.getItem('TodoData')) || '[]',
+    );
 
     if (data.title == '') {
       closeModal();
     } else {
       data.id = Math.floor(Math.random() * 1000 + 1);
       data.createdAt = new Date();
-      // todoData.push(data);
+      todoData.push(data);
       dispatch(addTodo(data));
-      // try {
-      //   await AsyncStorage.setItem('TodoData', JSON.stringify(todoData));
-      // } catch (error) {}
+      try {
+        await AsyncStorage.setItem('TodoData', JSON.stringify(todoData));
+      } catch (error) {}
       setTodoObject({
         id: '',
         title: '',

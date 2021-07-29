@@ -7,15 +7,18 @@ export default function ListItem({item, oneditIndex, onIndexCheckBox}) {
   const [timeCalculation, seTimeCalucaltion] = useState();
   const [timeInHours, setTimeInHours] = useState();
 
-  setInterval(() => {
-    const leftTime = moment(item.date + item.time, 'YYYY-MM-DDLT');
-    const pastTime = moment(leftTime);
-    const presentTime = moment(new Date());
-    const duration = moment.duration(pastTime.diff(presentTime));
-    setTimeInHours(Math.ceil(duration.asHours()));
-    seTimeCalucaltion(Math.ceil(duration.asMinutes()));
-  }, 1000);
-
+  setInterval(() => {}, 1000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const leftTime = moment(item.date + item.time, 'YYYY-MM-DDLT');
+      const pastTime = moment(leftTime);
+      const presentTime = moment(new Date());
+      const duration = moment.duration(pastTime.diff(presentTime));
+      setTimeInHours(Math.ceil(duration.asHours()));
+      seTimeCalucaltion(Math.ceil(duration.asMinutes()));
+    }, 1000);
+    return () => clearTimeout(timer);
+  });
   return (
     <View>
       <View style={styles.row}>

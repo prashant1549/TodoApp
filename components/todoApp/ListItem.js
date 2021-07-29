@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import moment from 'moment';
 
-export default function ListItem({item, oneditIndex, index, onIndexCheckBox}) {
+export default function ListItem({item, oneditIndex, onIndexCheckBox}) {
   const [timeCalculation, seTimeCalucaltion] = useState();
   const [timeInHours, setTimeInHours] = useState();
 
@@ -20,11 +20,10 @@ export default function ListItem({item, oneditIndex, index, onIndexCheckBox}) {
     <View>
       <View style={styles.row}>
         <View stye={{flex: 1}}>
-          {/* <View style={styles.checkboxContainer}> */}
           <CheckBox
             value={item.isSelected}
             disabled={false}
-            onValueChange={value => onIndexCheckBox(value, index)}
+            onValueChange={() => onIndexCheckBox(item.id)}
             style={styles.checkbox}
           />
         </View>
@@ -32,7 +31,7 @@ export default function ListItem({item, oneditIndex, index, onIndexCheckBox}) {
           <Text
             style={styles.inpuText}
             numberOfLines={1}
-            onPress={() => oneditIndex(index)}>
+            onPress={() => oneditIndex(item.id)}>
             {item.title}
           </Text>
         </View>

@@ -21,7 +21,6 @@ export default function TodoList({Data, onEdit, onCheckBox}) {
           renderItem={({item, index}) => (
             <ListItem
               item={item}
-              index={index}
               oneditIndex={onEdit}
               onIndexCheckBox={onCheckBox}
             />

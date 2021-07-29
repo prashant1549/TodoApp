@@ -10,92 +10,45 @@ import {
 import CalendarTodo from './CalendarTodo';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import AsyncStorage from '@react-native-community/async-storage';
 
-export default function ModalPage({modalVisible, callBack, editIndex}) {
+export default function ModalPage({
+  modalVisible,
+  callBack,
+  todoObject,
+  onSubmit,
+  handleTime,
+  handleSelectDate,
+  handleChnage,
+  editIndex,
+}) {
   const [dateVisible, setDateVisible] = useState(false);
   const [timeVisible, setTimeVisible] = useState(false);
-  const [todoObject, setTodoObject] = useState({
-    id: '',
-    title: '',
-    date: 'Select Date',
-    time: 'Select Time',
-    createdAt: '',
-    isSelected: false,
-  });
-  if (editIndex > -1) {
-    const todoData = JSON.parse(AsyncStorage.getItem('TodoData') || '[]');
-    setTodoObject(todoData[editIndex]);
-  }
+
   const closeButton = () => {
     callBack();
   };
   const handleConfirm = selectedDate => {
-    const data = {...todoObject};
-    data.time = moment(selectedDate).format('LT');
-    setTodoObject(data);
+    handleTime(moment(selectedDate).format('LT'));
     hideDatePicker();
   };
   const hideDatePicker = () => {
     setTimeVisible(false);
   };
-  const handleSubmit = async () => {
-    const data = {...todoObject};
-    const todoData = JSON.parse(
-      (await AsyncStorage.getItem('TodoData')) || '[]',
-    );
-
-    if (editIndex > -1) {
-      todoData[editIndex] = data;
-      try {
-        await AsyncStorage.setItem('TodoData', JSON.stringify(todoData));
-      } catch (error) {}
-      setTodoObject({
-        id: '',
-        title: '',
-        date: 'Select Date',
-        time: 'Select Time',
-        createdAt: '',
-        isSelected: false,
-      });
-      callBack();
-    } else {
-      if (data.title == '') {
-        callBack();
-      } else {
-        data.id = Math.floor(Math.random() * 1000 + 1);
-        data.createdAt = new Date();
-        todoData.push(data);
-
-        await AsyncStorage.setItem('TodoData', JSON.stringify(todoData));
-        setTodoObject({
-          id: '',
-          title: '',
-          date: 'Select Date',
-          time: 'Select Time',
-          createdAt: '',
-          isSelected: false,
-        });
-        callBack();
-      }
-    }
+  const submitTodo = () => {
+    onSubmit();
   };
   const handleDate1 = () => {
     setDateVisible(true);
   };
-  const handleSelectDate = day => {
-    const data = {...todoObject};
-    data.date = day.dateString;
-    setTodoObject(data);
+  const handlePickDate = day => {
+    handleSelectDate(day.dateString);
     setDateVisible(false);
   };
   const handleSelectTime = () => {
     setTimeVisible(true);
   };
-  const handleChnage = value => {
-    const data = {...todoObject};
-    data.title = value;
-    setTodoObject(data);
+  const handletitle = value => {
+    handleChnage(value);
   };
   return (
     <View style={styles.centeredView}>
@@ -117,7 +70,7 @@ export default function ModalPage({modalVisible, callBack, editIndex}) {
             <View>
               <TextInput
                 style={styles.input}
-                onChangeText={value => handleChnage(value)}
+                onChangeText={value => handletitle(value)}
                 value={todoObject.title}
                 numberOfLines={10}
                 multiline={true}
@@ -150,7 +103,7 @@ export default function ModalPage({modalVisible, callBack, editIndex}) {
               <View style={styles.end}>
                 <TouchableOpacity
                   style={[styles.button, styles.buttonClose]}
-                  onPress={handleSubmit}>
+                  onPress={submitTodo}>
                   <Text style={styles.textStyle}>Done</Text>
                 </TouchableOpacity>
               </View>
@@ -167,7 +120,7 @@ export default function ModalPage({modalVisible, callBack, editIndex}) {
           callBack();
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <CalendarTodo onDate={handleSelectDate} />
+          <CalendarTodo onDate={handlePickDate} />
         </View>
       </Modal>
       <DateTimePickerModal

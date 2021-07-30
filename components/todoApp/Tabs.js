@@ -14,7 +14,7 @@ const Tabs = () => {
         showLabel: false,
         style: {
           position: 'absolute',
-          bottom: 15,
+          bottom: 5,
           left: 10,
           right: 10,
           elevation: 0,

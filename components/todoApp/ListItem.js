@@ -1,30 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import moment from 'moment';
 
-export default function ListItem({item, oneditIndex, index, onIndexCheckBox}) {
+export default function ListItem({item, oneditIndex, onIndexCheckBox}) {
   const [timeCalculation, seTimeCalucaltion] = useState();
   const [timeInHours, setTimeInHours] = useState();
 
-  setInterval(() => {
-    const leftTime = moment(item.date + item.time, 'YYYY-MM-DDLT');
-    const pastTime = moment(leftTime);
-    const presentTime = moment(new Date());
-    const duration = moment.duration(pastTime.diff(presentTime));
-    setTimeInHours(Math.ceil(duration.asHours()));
-    seTimeCalucaltion(Math.ceil(duration.asMinutes()));
-  }, 1000);
-
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const leftTime = moment(item.date + item.time, 'YYYY-MM-DDLT');
+      const pastTime = moment(leftTime);
+      const presentTime = moment(new Date());
+      const duration = moment.duration(pastTime.diff(presentTime));
+      setTimeInHours(Math.ceil(duration.asHours()));
+      seTimeCalucaltion(Math.ceil(duration.asMinutes()));
+    }, 1000);
+    return () => clearInterval(timer);
+  });
   return (
     <View>
       <View style={styles.row}>
         <View stye={{flex: 1}}>
-          {/* <View style={styles.checkboxContainer}> */}
           <CheckBox
             value={item.isSelected}
             disabled={false}
-            onValueChange={value => onIndexCheckBox(value, index)}
+            onValueChange={() => onIndexCheckBox(item.id)}
             style={styles.checkbox}
           />
         </View>
@@ -32,7 +33,7 @@ export default function ListItem({item, oneditIndex, index, onIndexCheckBox}) {
           <Text
             style={styles.inpuText}
             numberOfLines={1}
-            onPress={() => oneditIndex(index)}>
+            onPress={() => oneditIndex(item.id)}>
             {item.title}
           </Text>
         </View>

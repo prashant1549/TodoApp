@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import TodoList from './TodoList';
 import ModalPage from './ModalPage';
@@ -88,6 +88,32 @@ export default function FilterAll({navigation}) {
         onCheckBox={handleCheckBox}
         totalItem="All"
       />
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          top: -15,
+          ...styles.shadow,
+        }}>
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            backgroundColor: '#e32f45',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: 25,
+              color: '#fff',
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}>
+            {todos.length}
+          </Text>
+        </View>
+      </View>
       <ModalPage
         modalVisible={modalVisible}
         callBack={closeModal}
@@ -101,3 +127,15 @@ export default function FilterAll({navigation}) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#7F5DF0',
+    textShadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

@@ -17,6 +17,7 @@ export default function TodoList({Data, onEdit, onCheckBox, totalItem}) {
       ) : (
         <View>
           <FlatList
+            style={{height: 520}}
             data={Data}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
